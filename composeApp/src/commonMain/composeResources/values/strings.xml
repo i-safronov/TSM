@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TSM</string>
+    <string name="tsm_description">Smart Task Manager</string>
+    <string name="your_name">Как тебя\nзовут? 👋</string>
+    <string name="your_name_description">Введи имя — оно появится в приветствии\nкаждый день</string>
+    <string name="enter_your_name">Твое имя</string>
+    <string name="star_workt">Начать работу</string>
+</resources>
