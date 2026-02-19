@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.painterResource
+import com.mobile.finsolve.app.tsm.ui.theme.TsmTypography
 
 import tsm.composeapp.generated.resources.Res
 import tsm.composeapp.generated.resources.compose_multiplatform
@@ -22,7 +23,7 @@ import tsm.composeapp.generated.resources.compose_multiplatform
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    MaterialTheme(typography = TsmTypography()) {
         var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier
