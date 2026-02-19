@@ -36,11 +36,6 @@ class AndroidTSMPreferences(context: Context) : TSMPreferences {
         prefs.edit { clear() }
 }
 
-// actual — возвращаем Android реализацию
-// Context пробрасываем через DI (Koin / manual)
-// Инициализируй один раз в Application:
-//   TSMPreferencesHolder.init(applicationContext)
-
 object TSMPreferencesHolder {
     private lateinit var instance: TSMPreferences
 

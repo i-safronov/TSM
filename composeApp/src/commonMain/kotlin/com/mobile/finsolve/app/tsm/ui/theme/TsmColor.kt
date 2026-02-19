@@ -64,7 +64,7 @@ object TsmColor {
 // ─────────────────────────────────────────────────────────────────────────────
 
 fun Modifier.tsmAmbientBackground(
-    base: Color = TsmColor.BackgroundDeep,
+    base: Color = TsmColor.Background,
     topBlobColor: Color = TsmColor.Accent.copy(alpha = 0.13f),
     topBlobX: Float = 0.15f,
     topBlobY: Float = 0.10f,

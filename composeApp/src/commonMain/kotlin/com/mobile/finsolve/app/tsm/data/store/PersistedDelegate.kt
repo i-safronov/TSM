@@ -33,6 +33,6 @@ class PersistedDelegate<T>(
 }
 
 inline fun <reified T> persisted(
-    value: T,
+    default: T,
     prefs: TSMPreferences = tsmPreferences(),
-): PersistedDelegate<T> = PersistedDelegate(prefs, value)
+): PersistedDelegate<T> = PersistedDelegate(prefs, default)
