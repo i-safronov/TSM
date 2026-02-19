@@ -104,7 +104,17 @@ fun Modifier.tsmAmbientBackground(
 }
 
 /** Login / Onboarding */
-fun Modifier.tsmGradientBackground() = tsmAmbientBackground()
+fun Modifier.tsmGradientBackground() = tsmAmbientBackground(
+    base            = TsmColor.Surface,               // чистый белый вместо BackgroundDeep
+    topBlobColor    = TsmColor.Accent.copy(alpha = 0.07f),   // было 0.13f
+    topBlobX        = 0.15f,
+    topBlobY        = 0.10f,
+    topBlobRadius   = 0.70f,
+    bottomBlobColor = TsmColor.Success.copy(alpha = 0.05f),  // было 0.10f
+    bottomBlobX     = 0.85f,
+    bottomBlobY     = 0.78f,
+    bottomBlobRadius = 0.50f,
+)
 
 /** Dashboard — приглушённее, пятно сверху по центру */
 fun Modifier.tsmDashboardBackground() = tsmAmbientBackground(

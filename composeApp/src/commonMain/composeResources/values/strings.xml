@@ -1,8 +1,17 @@
 <resources>
     <string name="app_name">TSM</string>
     <string name="tsm_description">Smart Task Manager</string>
-    <string name="your_name">Как тебя\nзовут? 👋</string>
+    <string name="your_name">Как тебя зовут? 🤨</string>
+    <string name="hello">Привет,</string>
     <string name="your_name_description">Введи имя — оно появится в приветствии\nкаждый день</string>
     <string name="enter_your_name">Твое имя</string>
     <string name="star_workt">Начать работу</string>
+    <string name="home">Главная</string>
+    <string name="aims">Цели</string>
+    <string name="pomodoro">Помодоро</string>
+    <string name="control">Контроль</string>
+    <string name="tasks">ЗАДАЧ</string>
+    <string name="focus">ФОКУС</string>
+    <string name="progress">ПРОГРЕСС</string>
+    <string name="today">СЕГОДНЯ</string>
 </resources>

@@ -283,6 +283,165 @@ fun TButton(
     }
 }
 
+// ─────────────────────────────────────────────────────────────────────────────
+// TButtonIcon — иконочная кнопка (квадратная, только иконка без текста)
+//
+// Sizes:
+//   TButtonSize.Large  — 54×54dp, иконка 24dp
+//   TButtonSize.Medium — 46×46dp, иконка 20dp  (default)
+//   TButtonSize.Small  — 36×36dp, иконка 16dp
+//
+// Варианты те же что у TButton:
+//   Primary / Secondary / Ghost / Danger / Success
+//
+// Usage:
+//
+//   // Базовый — "+" из скриншота
+//   TButtonIcon(
+//       onClick = { },
+//       icon = { tint -> /* твоя иконка */ },
+//   )
+//
+//   // С кастомным размером
+//   TButtonIcon(
+//       onClick = { },
+//       size = TButtonSize.Large,
+//       icon = { tint -> /* твоя иконка */ },
+//   )
+//
+//   // Danger — удалить
+//   TButtonIcon(
+//       onClick = { },
+//       variant = TButtonVariant.Danger,
+//       icon = { tint -> /* иконка корзины */ },
+//   )
+// ─────────────────────────────────────────────────────────────────────────────
+
+@Composable
+fun TButtonIcon(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    icon: @Composable (tint: Color) -> Unit,
+    variant: TButtonVariant = TButtonVariant.Secondary,
+    size: TButtonSize = TButtonSize.Medium,
+    enabled: Boolean = true,
+    isLoading: Boolean = false,
+) {
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    // ── Size tokens ──────────────────────────────────────────────────────────
+    val boxSize: Dp = when (size) {
+        TButtonSize.Large  -> 54.dp
+        TButtonSize.Medium -> 46.dp
+        TButtonSize.Small  -> 36.dp
+    }
+    val iconSize: Dp = when (size) {
+        TButtonSize.Large  -> 24.dp
+        TButtonSize.Medium -> 20.dp
+        TButtonSize.Small  -> 16.dp
+    }
+    val cornerRadius: Dp = when (size) {
+        TButtonSize.Large  -> 16.dp
+        TButtonSize.Medium -> 14.dp
+        TButtonSize.Small  -> 10.dp
+    }
+
+    // ── Цвета — те же токены что у TButton ──────────────────────────────────
+    val activeBg: Color = when (variant) {
+        TButtonVariant.Primary   -> TsmColor.Accent
+        TButtonVariant.Secondary -> TsmColor.Surface
+        TButtonVariant.Ghost     -> TsmColor.Transparent
+        TButtonVariant.Danger    -> TsmColor.Danger
+        TButtonVariant.Success   -> TsmColor.Success
+    }
+    val pressedBg: Color = when (variant) {
+        TButtonVariant.Primary   -> TsmColor.AccentLight
+        TButtonVariant.Secondary -> TsmColor.SurfaceTint
+        TButtonVariant.Ghost     -> TsmColor.AccentContainer
+        TButtonVariant.Danger    -> TsmColor.DangerContainer
+        TButtonVariant.Success   -> TsmColor.SuccessContainer
+    }
+    val disabledBg: Color = when (variant) {
+        TButtonVariant.Ghost -> TsmColor.Transparent
+        else                 -> TsmColor.SurfaceTint
+    }
+    val activeContentColor: Color = when (variant) {
+        TButtonVariant.Primary   -> TsmColor.White
+        TButtonVariant.Secondary -> TsmColor.TextSecondary
+        TButtonVariant.Ghost     -> TsmColor.Accent
+        TButtonVariant.Danger    -> TsmColor.White
+        TButtonVariant.Success   -> TsmColor.White
+    }
+    val activeBorderColor: Color = when (variant) {
+        TButtonVariant.Secondary -> TsmColor.BorderDefault
+        else                     -> TsmColor.Transparent
+    }
+
+    // ── Animated values ──────────────────────────────────────────────────────
+    val isActive = enabled && !isLoading
+
+    val bgColor by animateColorAsState(
+        targetValue = when {
+            !isActive -> disabledBg
+            isPressed -> pressedBg
+            else      -> activeBg
+        },
+        animationSpec = tween(150),
+        label = "iconBtnBg",
+    )
+    val contentColor by animateColorAsState(
+        targetValue = if (isActive) activeContentColor else TsmColor.TextTertiary,
+        animationSpec = tween(150),
+        label = "iconBtnContent",
+    )
+    val borderColor by animateColorAsState(
+        targetValue = if (isActive) activeBorderColor else TsmColor.BorderSubtle,
+        animationSpec = tween(150),
+        label = "iconBtnBorder",
+    )
+    val scale by animateFloatAsState(
+        targetValue = if (isPressed && isActive) 0.93f else 1f,
+        animationSpec = tween(120),
+        label = "iconBtnScale",
+    )
+
+    val shape = RoundedCornerShape(cornerRadius)
+
+    // ── Layout ───────────────────────────────────────────────────────────────
+    Box(
+        modifier = modifier
+            .scale(scale)
+            .size(boxSize)
+            .clip(shape)
+            .background(bgColor)
+            .then(
+                if (borderColor != TsmColor.Transparent)
+                    Modifier.border(1.dp, borderColor, shape)
+                else Modifier
+            )
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+                enabled = isActive,
+                onClick = onClick,
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(iconSize),
+                color = contentColor,
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Box(Modifier.size(iconSize)) {
+                icon(contentColor)
+            }
+        }
+    }
+}
+
 @Preview(
     name = "TButton — All States",
     showBackground = true,

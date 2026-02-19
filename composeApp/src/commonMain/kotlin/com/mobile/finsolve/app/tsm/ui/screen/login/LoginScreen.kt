@@ -26,8 +26,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 import com.mobile.finsolve.app.tsm.ui.components.button.TButton
 import com.mobile.finsolve.app.tsm.ui.components.input_field.TTextField
+import com.mobile.finsolve.app.tsm.ui.screen.home.HomeScreen
 import com.mobile.finsolve.app.tsm.ui.theme.TsmColor
 import com.mobile.finsolve.app.tsm.ui.theme.TsmFont
 import com.mobile.finsolve.app.tsm.ui.theme.tsmAmbientBackground
@@ -45,6 +48,7 @@ class LoginScreen : Screen {
 
     @Composable
     override fun Content() {
+        val localNavigator = LocalNavigator.currentOrThrow
         val model = rememberScreenModel { LoginModel() }
         val state by model.state.collectAsState()
         var userName by remember { mutableStateOf("") }
@@ -60,6 +64,9 @@ class LoginScreen : Screen {
             userName = userName,
             onUserNameChange = { userName = it },
             onLoginClick = { model.login(userName) },
+            navigateToHome = {
+                localNavigator.replaceAll(HomeScreen())
+            }
         )
     }
 }
@@ -71,6 +78,7 @@ private fun LoginContent(
     userName: String,
     onUserNameChange: (String) -> Unit,
     onLoginClick: () -> Unit,
+    navigateToHome: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -85,7 +93,7 @@ private fun LoginContent(
             }
 
             state.isLoggedIn == true -> {
-                // TODO: пользователь авторизован — навигация на главный экран
+                navigateToHome()
             }
 
             else -> {
@@ -177,6 +185,7 @@ private fun LoginScreenLoadingPreview() {
         userName = "",
         onUserNameChange = {},
         onLoginClick = {},
+        navigateToHome = {}
     )
 }
 
@@ -190,6 +199,8 @@ private fun LoginScreenFormPreview() {
         userName = "Илья",
         onUserNameChange = {},
         onLoginClick = {},
+        navigateToHome = {}
+
     )
 }
 
@@ -203,5 +214,7 @@ private fun LoginScreenLoggingInPreview() {
         userName = "Илья",
         onUserNameChange = {},
         onLoginClick = {},
+        navigateToHome = {}
+
     )
 }
